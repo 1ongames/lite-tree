@@ -381,75 +381,77 @@ function parseList(data) {
 			rows[i] = row;
 			continue;
 		}
+		// Handle list items with preserved indentation depth
 		if(row.match(/^(\s{2,})[*]/)) {
-			rows[i] = row.replace(/^(\s{2,})[*]/, ' *');
+			// Don't collapse indentation - preserve it for nesting
+			rows[i] = row;
 			continue;
 		}
 		if(row.match(/^(\s{2,})1[.]/)) {
-			rows[i] = row.replace(/^(\s{2,})1[.]/, ' 1.');
+			rows[i] = row;
 			continue;
 		}
 		if(row.match(/^(\s{2,})a[.]/)) {
-			rows[i] = row.replace(/^(\s{2,})a[.]/, ' a.');
+			rows[i] = row;
 			continue;
 		}
 		if(row.match(/^(\s{2,})A[.]/)) {
-			rows[i] = row.replace(/^(\s{2,})A[.]/, ' A.');
+			rows[i] = row;
 			continue;
 		}
 		if(row.match(/^(\s{2,})i[.]/)) {
-			rows[i] = row.replace(/^(\s{2,})i[.]/, ' i.');
+			rows[i] = row;
 			continue;
 		}
 		if(row.match(/^(\s{2,})I[.]/)) {
-			rows[i] = row.replace(/^(\s{2,})I[.]/, ' I.');
+			rows[i] = row;
 			continue;
 		}
-		if(row.startsWith(' *') && !inlist) {
-			row = row.replace(/^\s[*](\s*)/, '<ulwikilist class=wiki-list>\n<liwikilist>\n');
+		if(row.match(/^(\s+)[*]/) && !inlist) {
+			row = row.replace(/^(\s+)[*](\s*)/, '<ulwikilist class=wiki-list>\n<liwikilist>\n');
 			inlist = 1;
-		} else if(row.startsWith(' *')) {
-			row = row.replace(/^\s/, '');
+		} else if(row.match(/^(\s+)[*]/)) {
+			row = row.replace(/^(\s+)/, '');
 			row = row.replace(/^[*](\s*)/, '</liwikilist><liwikilist>\n');
 			inlist = 1;
 		}
-		if(row.startsWith(' 1.') && !inol1list) {
-			row = row.replace(/^\s1[.](\s*)/, '<olwikilist class=wiki-list>\n<liwikilist>\n');
+		if(row.match(/^(\s+)1[.]/) && !inol1list) {
+			row = row.replace(/^(\s+)1[.](\s*)/, '<olwikilist class=wiki-list>\n<liwikilist>\n');
 			inol1list = 1;
-		} else if(row.startsWith(' 1.')) {
-			row = row.replace(/^\s/, '');
+		} else if(row.match(/^(\s+)1[.]/)) {
+			row = row.replace(/^(\s+)/, '');
 			row = row.replace(/^1[.](\s*)/, '</liwikilist><liwikilist>\n');
 			inol1list = 1;
 		}
-		if(row.startsWith(' a.') && !inolalist) {
-			row = row.replace(/^\sa[.](\s*)/, '<olwikilist class="wiki-list wiki-list-alpha">\n<liwikilist>\n');
+		if(row.match(/^(\s+)a[.]/) && !inolalist) {
+			row = row.replace(/^(\s+)a[.](\s*)/, '<olwikilist class="wiki-list wiki-list-alpha">\n<liwikilist>\n');
 			inolalist = 1;
-		} else if(row.startsWith(' a.')) {
-			row = row.replace(/^\s/, '');
+		} else if(row.match(/^(\s+)a[.]/)) {
+			row = row.replace(/^(\s+)/, '');
 			row = row.replace(/^a[.](\s*)/, '</liwikilist><liwikilist>\n');
 			inolalist = 1;
 		}
-		if(row.startsWith(' A.') && !inolAlist) {
-			row = row.replace(/^\sa[.](\s*)/, '<olwikilist class="wiki-list wiki-list-upper-alpha">\n<liwikilist>\n');
+		if(row.match(/^(\s+)A[.]/) && !inolAlist) {
+			row = row.replace(/^(\s+)A[.](\s*)/, '<olwikilist class="wiki-list wiki-list-upper-alpha">\n<liwikilist>\n');
 			inolAlist = 1;
-		} else if(row.startsWith(' A.')) {
-			row = row.replace(/^\s/, '');
+		} else if(row.match(/^(\s+)A[.]/)) {
+			row = row.replace(/^(\s+)/, '');
 			row = row.replace(/^A[.](\s*)/, '</liwikilist><liwikilist>\n');
 			inolAlist = 1;
 		}
-		if(row.startsWith(' i.') && !inolAlist) {
-			row = row.replace(/^\si[.](\s*)/, '<olwikilist class="wiki-list wiki-list-roman">\n<liwikilist>\n');
+		if(row.match(/^(\s+)i[.]/) && !inolilist) {
+			row = row.replace(/^(\s+)i[.](\s*)/, '<olwikilist class="wiki-list wiki-list-roman">\n<liwikilist>\n');
 			inolilist = 1;
-		} else if(row.startsWith(' A.')) {
-			row = row.replace(/^\s/, '');
+		} else if(row.match(/^(\s+)i[.]/)) {
+			row = row.replace(/^(\s+)/, '');
 			row = row.replace(/^i[.](\s*)/, '</liwikilist><liwikilist>\n');
 			inolilist = 1;
 		}
-		if(row.startsWith(' I.') && !inolAlist) {
-			row = row.replace(/^\sI[.](\s*)/, '<olwikilist class="wiki-list wiki-list-upper-roman">\n<liwikilist>\n');
+		if(row.match(/^(\s+)I[.]/) && !inolIlist) {
+			row = row.replace(/^(\s+)I[.](\s*)/, '<olwikilist class="wiki-list wiki-list-upper-roman">\n<liwikilist>\n');
 			inolIlist = 1;
-		} else if(row.startsWith(' A.')) {
-			row = row.replace(/^\s/, '');
+		} else if(row.match(/^(\s+)I[.]/)) {
+			row = row.replace(/^(\s+)/, '');
 			row = row.replace(/^I[.](\s*)/, '</liwikilist><liwikilist>\n');
 			inolIlist = 1;
 		}
