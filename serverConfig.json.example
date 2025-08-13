@@ -1,0 +1,6 @@
+{
+  "notice": "",
+  "default_skin": "",
+  "namespaces": ["문서", "파일", "사용자", "분류", "휴지통", "파일휴지통", "위키운영"],
+  "database_type": "sqlite3"
+}

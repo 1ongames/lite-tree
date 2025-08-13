@@ -3,6 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "setup": "node setup.js",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
@@ -11,6 +12,7 @@
   },
   "dependencies": {
     "better-sqlite3": "^12.2.0",
+    "crypto": "^1.0.1",
     "nuxt": "^4.0.3",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1"
