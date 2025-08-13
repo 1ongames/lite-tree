@@ -14,7 +14,6 @@ const rl = readline.createInterface({
 console.log('데이터베이스 초기화 진행중...');
 
 db.prepare(`CREATE TABLE IF NOT EXISTS document (
-	uuid TEXT NOT NULL,
     namespace TEXT NOT NULL,
 	name TEXT NOT NULL,
 	content TEXT NOT NULL,
@@ -24,7 +23,20 @@ db.prepare(`CREATE TABLE IF NOT EXISTS document (
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 )`).run();
 
+db.prepare(`CREATE TABLE IF NOT EXISTS users (
+    uuid TEXT NOT NULL,
+	name TEXT NOT NULL,
+	email TEXT NOT NULL,
+	isIP BOOLEAN NOT NULL,
+    isAutoVerifiedUser BOOLEAN NOT NULL,
+    perms ARRAY NOT NULL,
+)`).run();
+
 console.log('데이터베이스 초기화 완료!');
+
+rl.question('위키 소유자 닉네임 입력: ', (name) => {
+	console.log(`위키 소유자 닉네임: ${name}`);
+});
 
 /* TODO: 여러가지 DB 지원
 
