@@ -6,6 +6,10 @@ import { randomUUID } from 'crypto';
 // TODO: 여러가지 DB 지원 import pg from 'pg';
 
 const db = new Database('wikidata.db');
+const rl = readline.createInterface({
+	input: process.stdin,
+	output: process.stdout
+});
 
 console.log('데이터베이스 초기화 진행중...');
 
@@ -21,11 +25,8 @@ db.prepare(`CREATE TABLE IF NOT EXISTS document (
 )`).run();
 
 console.log('데이터베이스 초기화 완료!');
+
 /* TODO: 여러가지 DB 지원
-const rl = readline.createInterface({
-	input: process.stdin,
-	output: process.stdout
-});
 
 function selectDatabase() {
 	rl.question('1: sqlite3\n2: mongodb\n3: postgresql\n사용할 DB를 선택하세요: ', (answer) => {
