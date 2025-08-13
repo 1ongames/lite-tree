@@ -36,6 +36,7 @@ console.log('데이터베이스 초기화 완료!');
 
 rl.question('위키 소유자 닉네임 입력: ', (name) => {
 	console.log(`위키 소유자 닉네임: ${name}`);
+	// TODO: 추가
 });
 
 /* TODO: 여러가지 DB 지원
