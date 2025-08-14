@@ -30,13 +30,15 @@ const menuMap = {
     { logtype: 'revert', label: '되돌림' }
   ],
   discuss: [
-    { logtype: 'opened_thread', label: '열린 토론' },
+    { logtype: 'normal_thread', label: '열린 토론' },
+    { logtype: 'old_thread', label: '오래된 토론' },
+    { logtype: 'pause_thread', label: '중지된 토론' },
     { logtype: 'closed_thread', label: '닫힌 토론' },
-    { logtype: 'delete', label: '삭제' },
-    { logtype: 'move', label: '이동' },
-    { logtype: 'revert', label: '되돌림' }
+    { logtype: 'open_editrequest', label: '열린 편집 요청' },
+    { logtype: 'accepted_editrequest', label: '승인된 편집 요청' },
+    { logtype: 'closed_editrequest', label: '닫힌 편집 요청' },
+    { logtype: 'old_editrequest', label: '오래된 편집 요청' }
   ],
-  // 필요시 다른 타입 추가
 }
 
 const menuItems = menuMap[props.type] || menuMap['changes']
