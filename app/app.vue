@@ -1,5 +1,5 @@
 <template>
-  <h1>{{ wikiPage?.title || 'undefined' }}</h1>
+  <h1>{{ wikiPage?.isDocument ? data.docName : (wikiPage?.title || '&nbsp;') }}</h1>
   <NuxtPage />
 </template>
 
@@ -8,5 +8,7 @@
 </style>
 
 <script setup>
+const { data } = await useFetch('/i/getDocument')
+
 const wikiPage = useState('wikiPage')
 </script>

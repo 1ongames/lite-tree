@@ -4,9 +4,9 @@
       <div class="recent-button">
         <ul class="recent-block">
           <li v-for="item in menuItems" :key="item.logtype">
-            <a :href="`/RecentChanges?logtype=${item.logtype}`" :class="['recent-content', currentLogtype === item.logtype ? 'recent-item' : '']" v-if="type == 1">{{ item.label }}</a>
-            <a :href="`/RecentDiscuss?logtype=${item.logtype}`" :class="['recent-content', currentLogtype === item.logtype ? 'recent-item' : '']" v-else-if="type == 2">{{ item.label }}</a>
-            <!--<a :href="`/contribution/${user.uuid}/${item.logtype}`" :class="['recent-content', currentLogtype === item.logtype ? 'recent-item' : '']" v-else-if="type == 3">{{ item.label }}</a>-->
+            <a :href="`/RecentChanges?logtype=${item.logtype}`" :class="['recent-content', logparams === item.logtype ? 'recent-item' : '']" v-if="type == 1">{{ item.label }}</a>
+            <a :href="`/RecentDiscuss?logtype=${item.logtype}`" :class="['recent-content', logparams === item.logtype ? 'recent-item' : '']" v-else-if="type == 2">{{ item.label }}</a>
+            <!--<a :href="`/contribution/${user.uuid}/${item.logtype}`" :class="['recent-content',  logparams=== item.logtype ? 'recent-item' : '']" v-else-if="type == 3">{{ item.label }}</a>-->
           </li>
         </ul>
       </div>
@@ -21,6 +21,9 @@
 </style>
 
 <script setup>
+import { useRoute } from 'vue-router'
+
+let logparams = useRoute().query.logtype;
 const props = defineProps({
   type: {
     type: Number,
