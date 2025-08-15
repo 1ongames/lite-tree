@@ -1,5 +1,5 @@
 <template>
-    <RecentBar type=1 />
+    <RecentBar :type="1" />
 </template>
 
 <script setup>
