@@ -1,5 +1,5 @@
 <template>
-  <h1>{{ hydrated ? heading : '\u00A0' }}</h1>
+  <h1>{{ hydrated ? title : '\u00A0' }}</h1>
   <NuxtPage />
 </template>
 
@@ -11,11 +11,11 @@ const { data } = useFetch('/i/getDocument', { lazy: true })
 const hydrated = ref(false)
 onMounted(() => { hydrated.value = true })
 
-const heading = computed(() => {
-  if (wikiPage?.isDocument) {
-    return data?.docName || wikiPage?.title || '\u00A0'
+const title = computed(() => {
+  if (wikiPage.value?.isDocument) {
+    return data.vaule?.docName || wikiPage.value?.title || '\u00A0'
   }
-  return wikiPage?.title || '\u00A0'
+  return wikiPage.value?.title || '\u00A0'
 })
 </script>
 
