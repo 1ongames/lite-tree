@@ -8,4 +8,8 @@
 <script setup>
 import { useFetch } from '#imports'
 const { data } = await useFetch('/i/getDocument')
+
+const wikiPage = useState('wikiPage', () => ({
+  title: data.docName || 'undefined'
+}))
 </script>

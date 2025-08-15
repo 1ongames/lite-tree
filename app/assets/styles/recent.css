@@ -1,0 +1,61 @@
+.recent-navbar {
+    margin-left: calc(var(--article-padding-x, 0) * -1);
+    margin-right: calc(var(--article-padding-x, 0) * -1);
+    position: relative;
+}
+
+.recent-ui {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.recent-menu {
+    overflow-x: auto;
+}
+
+.recent-button {
+    display: inline-block;
+    margin: 0 var(--article-padding-x, 0);
+}
+
+.recent-block {
+    display: flex;
+    list-style: none;
+    position: relative;
+}
+
+.recent-content {
+    color: var(--light-text-color, var(--text-color, #212529));
+    display: inline-block;
+    padding: .5rem .75rem;
+    position: relative;
+    text-align: center;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.recent-item {
+    --navigation-item-underline-color: var(--brand-bright-color-1, #4188f1);
+    color: var(--brand-color-1, #4188f1);
+    font-weight: 600;
+}
+
+.recent-border[data-v-3bee87d7] {
+    background: linear-gradient(90deg, transparent, #fff);
+    background: linear-gradient(90deg, transparent, var(--light-article-background-color, var(--article-background-color, #fff)));
+    bottom: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 8rem;
+}
+
+.recent-line {
+    background: linear-gradient(90deg, #fff, transparent);
+    background: linear-gradient(90deg, var(--light-article-background-color, var(--article-background-color, #fff)), transparent);
+    left: 0;
+    right: auto;
+}
