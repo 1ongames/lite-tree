@@ -4,9 +4,9 @@
       <div class="recent-button">
         <ul class="recent-block">
           <li v-for="item in menuItems" :key="item.logtype">
-            <a :href="`/RecentChanges?logtype=${item.logtype}`" :class="['recent-content', logparams === item.logtype ? 'recent-item' : '']" v-if="type == 1">{{ item.label }}</a>
-            <a :href="`/RecentDiscuss?logtype=${item.logtype}`" :class="['recent-content', logparams === item.logtype ? 'recent-item' : '']" v-else-if="type == 2">{{ item.label }}</a>
-            <!--<a :href="`/contribution/${user.uuid}/${item.logtype}`" :class="['recent-content',  logparams=== item.logtype ? 'recent-item' : '']" v-else-if="type == 3">{{ item.label }}</a>-->
+            <a :href="`/RecentChanges?logtype=${item.logtype}`" :class="['recent-content', logparams === item.logtype || optType === item.logtype ? 'recent-item' : '']" v-if="type == 1">{{ item.label }}</a>
+            <a :href="`/RecentDiscuss?logtype=${item.logtype}`" :class="['recent-content', logparams === item.logtype || optType === item.logtype ? 'recent-item' : '']" v-else-if="type == 2">{{ item.label }}</a>
+            <!-- <a :href="`/contribution/${user.uuid}/${item.logtype}`" :class="['recent-content',  logparams=== item.logtype ? 'recent-item' : '']" v-else-if="type == 3">{{ item.label }}</a>-->
           </li>
         </ul>
       </div>
@@ -28,6 +28,10 @@ const props = defineProps({
   type: {
     type: Number,
     default: 1
+  },
+  optType: {
+    type: String,
+    default: ''
   }
 })
 
