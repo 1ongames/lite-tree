@@ -6,7 +6,7 @@
 <script setup lang="ts">
 const wikiPage = useState('wikiPage')
 
-const { data } = useFetch('/i/getDocument', { lazy: true })
+const { data } = await useFetch('/i/getDocument', { lazy: true })
 
 const hydrated = ref(false)
 onMounted(() => { hydrated.value = true })
