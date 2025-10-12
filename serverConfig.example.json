@@ -5,6 +5,8 @@
   "database_type": "sqlite3",
 
   "grant_permissions": [
+    "member",
+    "auto_verified_member",
     "nsacl",
     "admin",
     "delete_thread",
