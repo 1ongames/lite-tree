@@ -24,12 +24,12 @@ db.prepare(`CREATE TABLE IF NOT EXISTS document (
 )`).run();
 
 db.prepare(`CREATE TABLE IF NOT EXISTS users (
-    uuid TEXT NOT NULL,
-	name TEXT NOT NULL,
+	uuid TEXT NOT NULL,
+	name TEXT NOT NULL UNIQUE,
 	email TEXT NOT NULL,
 	isIP BOOLEAN NOT NULL,
-    isAutoVerifiedUser BOOLEAN NOT NULL,
-    perms ARRAY NOT NULL,
+	isAutoVerifiedUser BOOLEAN NOT NULL,
+	perms TEXT NOT NULL CHECK (json_valid(perms) AND json_type(perms, '$') = 'array')
 )`).run();
 
 console.log('데이터베이스 초기화 완료!');
@@ -38,28 +38,4 @@ rl.question('위키 소유자 닉네임 입력: ', (name) => {
 	console.log(`위키 소유자 닉네임: ${name}`);
 	// TODO: 추가
 });
-
-/* TODO: 여러가지 DB 지원
-
-function selectDatabase() {
-	rl.question('1: sqlite3\n2: mongodb\n3: postgresql\n사용할 DB를 선택하세요: ', (answer) => {
-		if (answer === '1') {
-			const db = new Database('wikidata.db');
-			console.log('데이터베이스 초기화 진행중...');
-			db.prepare(`CREATE TABLE IF NOT EXISTS docs (
-				id INTEGER PRIMARY KEY AUTOINCREMENT,
-				name TEXT UNIQUE,
-				content TEXT,
-				created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-				updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-			)`).run();
-			console.log('데이터베이스 초기화 완료!');
-			rl.close();
-		} else {
-			console.log('잘못된 입력값입니다. 다시 시도해주세요.');
-			selectDatabase();
-		}
-	});
-}
-
-selectDatabase();*/
+console.exit(0);

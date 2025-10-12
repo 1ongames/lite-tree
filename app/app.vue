@@ -3,7 +3,7 @@
   <NuxtPage />
 </template>
 
-<script setup lang="ts">
+<script setup>
 const wikiPage = useState('wikiPage')
 
 const { data } = await useFetch('/i/getDocument', { lazy: true })

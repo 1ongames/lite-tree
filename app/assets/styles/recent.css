@@ -42,7 +42,7 @@
     font-weight: 600;
 }
 
-.recent-border[data-v-3bee87d7] {
+.recent-border {
     background: linear-gradient(90deg, transparent, #fff);
     background: linear-gradient(90deg, transparent, var(--light-article-background-color, var(--article-background-color, #fff)));
     bottom: 0;

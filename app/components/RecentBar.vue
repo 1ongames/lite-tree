@@ -27,7 +27,7 @@ let logparams = useRoute().query.logtype;
 const props = defineProps({
   type: {
     type: Number,
-    default: 1
+    default: 0
   },
   optType: {
     type: String,
