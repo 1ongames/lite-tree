@@ -31,7 +31,7 @@ const wikiPage = useState('wikiPage', () => ({
   title: '권한 부여'
 }))
 
-// 권한 목록: 서버에서 동적으로 로드 (allowed_perms)
+// 권한 목록: 서버에서 동적으로 로드 (allowed_perms or all_perms)
 const grant_permission = ref([])
 
 // 상태
@@ -43,17 +43,24 @@ const pendingSubmit = ref(false)
 const message = ref('')
 const isError = ref(false)
 
-// 권한 목록 불러오기
+// 권한 목록 불러오기: 세션 기반(actor는 서버 미들웨어에서 식별)
 onMounted(async () => {
+  grant_permission.value = []
   try {
-    const res = await $fetch('/i/getPermissions', {
-      method: 'GET',
-      query: { type: 'grant' }
-    })
-    grant_permission.value = Array.isArray(res?.allowed_perms) ? res.allowed_perms : []
-  } catch (err) {
-    message.value = (err && err.data && err.data.message) || '권한 목록을 불러오지 못했습니다.'
-    isError.value = true
+    const allRes = await $fetch('/i/getPermissions', { method: 'GET', query: { type: 'all' } })
+    if (Array.isArray(allRes?.all_perms)) {
+      grant_permission.value = allRes.all_perms
+      return
+    }
+  } catch (e1) {
+    // developer가 아니면 403 발생 → 다음 요청 시도
+  }
+  try {
+    const grantRes = await $fetch('/i/getPermissions', { method: 'GET', query: { type: 'grant' } })
+    grant_permission.value = Array.isArray(grantRes?.allowed_perms) ? grantRes.allowed_perms : []
+  } catch (e2) {
+    /* message.value = (e2 && e2.data && e2.data.message) || '권한 목록을 가져올 권한이 없습니다.'
+    isError.value = true */
   }
 })
 
@@ -93,7 +100,7 @@ const submitPerms = async () => {
   message.value = ''
   isError.value = false
   if (!loadedUser.value) {
-    message.value = '먼저 사용자를 조회하세요.'
+    message.value = '사용자를 입력해주세요.'
     isError.value = true
     return
   }
@@ -106,7 +113,6 @@ const submitPerms = async () => {
         perms: selectedPerms.value
       }
     })
-    message.value = '권한이 저장되었습니다.'
   } catch (err) {
     message.value = (err && err.data && err.data.message) || '권한 저장에 실패했습니다.'
     isError.value = true

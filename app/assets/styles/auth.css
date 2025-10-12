@@ -1,0 +1,31 @@
+.auth-form {
+    max-width: 520px;
+    margin: 1rem;
+    display: grid;
+    gap: .5rem;
+}
+.row {
+    display:flex;
+    align-items:center;
+    gap:.75rem;
+    margin-top:.5rem;
+}
+.spacer {
+    flex:1;
+}
+.hint {
+    margin:.25rem 0 .5rem;
+    display:inline-block;
+}
+.signup-complete { 
+    max-width: 520px; 
+    margin: 1rem; 
+    display: grid; 
+    gap: .5rem; 
+}
+.signup-request { 
+    max-width: 720px; 
+    margin: 1rem; 
+    display: grid; 
+    gap: .75rem; 
+}

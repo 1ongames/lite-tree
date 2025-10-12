@@ -18,7 +18,7 @@ export default defineEventHandler((event) => {
       email TEXT,
       isIP BOOLEAN,
       isAutoVerifiedUser BOOLEAN,
-      perms TEXT
+      perms TEXT NOT NULL CHECK (json_valid(perms) AND json_type(perms, '$') = 'array')
     )`).run()
 
     const row = db.prepare('SELECT name, perms FROM users WHERE name = ? LIMIT 1').get(username)

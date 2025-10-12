@@ -7,3 +7,13 @@ button {
 span.error {
     color: #d33;
 }
+input {
+    padding: 0.4rem 0.6rem; 
+}
+textarea {
+    padding: 0.5rem;
+}
+a {
+    color: #0275d8;
+    text-decoration: none;
+}
