@@ -2,5 +2,22 @@
   "notice": "",
   "default_skin": "",
   "namespaces": ["문서", "파일", "사용자", "분류", "휴지통", "파일휴지통", "위키운영"],
-  "database_type": "sqlite3"
+  "database_type": "sqlite3",
+
+  "grant_permissions": [
+    "nsacl",
+    "admin",
+    "delete_thread",
+    "aclgroup",
+    "no_force_captcha",
+    "manage_thread",
+    "grant",
+    "login_history",
+    "api_access",
+    "hide_document_history_log",
+    "hide_revision",
+    "mark_troll_revision",
+    "batch_revert",
+    "disable_two_factor_login"
+  ]
 }

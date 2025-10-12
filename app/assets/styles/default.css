@@ -1,0 +1,9 @@
+button {
+    padding: 0.4rem 0.8rem;
+    color: #fff;
+    background-color: #0275d8;
+    border: none;
+}
+span.error {
+    color: #d33;
+}

@@ -8,11 +8,11 @@
     </form>
 
     <!-- 피드백 메시지 -->
-    <p v-if="message" :class="{ error: isError }">{{ message }}</p>
+    <span v-if="message" :class="{ error: isError }">{{ message }}</span>
 
     <!-- 권한 체크박스 리스트 -->
     <div v-if="loadedUser" class="grant-list">
-      <h3>권한 선택 ({{ loadedUser }})</h3>
+      <h3>{{ loadedUser }}</h3>
       <div class="grant-checkboxes">
         <label v-for="perm in grant_permission" :key="perm" class="grant-item">
           <input type="checkbox" :value="perm" v-model="selectedPerms" />
@@ -31,17 +31,8 @@ const wikiPage = useState('wikiPage', () => ({
   title: '권한 부여'
 }))
 
-// 권한 목록 (필요 시 별도 파일로 분리 가능)
-const grant_permission = [
-  'read',
-  'write',
-  'move',
-  'delete',
-  'revert',
-  'upload',
-  'grant',
-  'admin'
-]
+// 권한 목록: 서버에서 동적으로 로드 (allowed_perms)
+const grant_permission = ref([])
 
 // 상태
 const username = ref('')
@@ -51,6 +42,20 @@ const pendingLoad = ref(false)
 const pendingSubmit = ref(false)
 const message = ref('')
 const isError = ref(false)
+
+// 권한 목록 불러오기
+onMounted(async () => {
+  try {
+    const res = await $fetch('/i/getPermissions', {
+      method: 'GET',
+      query: { type: 'grant' }
+    })
+    grant_permission.value = Array.isArray(res?.allowed_perms) ? res.allowed_perms : []
+  } catch (err) {
+    message.value = (err && err.data && err.data.message) || '권한 목록을 불러오지 못했습니다.'
+    isError.value = true
+  }
+})
 
 // 유저 권한 불러오기
 const loadUser = async () => {
@@ -112,12 +117,6 @@ const submitPerms = async () => {
 </script>
 
 <style scoped>
-.admin-grant { padding: 0.5rem 0; }
-.grant-search { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
-.grant-search input { padding: 0.4rem 0.6rem; }
-.grant-list { margin-top: 1rem; }
-.grant-checkboxes { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.5rem 1rem; margin: 0.75rem 0; }
-.grant-item { display: flex; align-items: center; gap: 0.5rem; }
-button { padding: 0.4rem 0.8rem; }
-p.error { color: #d33; }
+@import '@/assets/styles/admin.css';
+@import '@/assets/styles/default.css';
 </style>
