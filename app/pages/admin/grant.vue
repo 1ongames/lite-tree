@@ -2,7 +2,7 @@
   <div class="admin-grant">
     <!-- 에러 표시 뷰 -->
     <div v-if="accessDenied" class="grant-error">
-      <span v-if="forbidden">{{ forbidden }}</span>
+      <span v-if="message">{{ message }}</span>
     </div>
 
     <template v-else>
@@ -57,10 +57,10 @@ onMounted(async () => {
   try {
     await $fetch('/i/getPermissions', { method: 'GET', query: { type: 'grant' }, credentials: 'include' })
   } catch (e) {
-    const { title, message } = setError('403')
+    const err = setError('403')
     accessDenied.value = true
-    wikiPage.value.title = title;
-    forbidden.value = message;
+    wikiPage.value.title = err.title
+    message.value = err.message
     return
   }
   // 권한이 있으면 초기 권한 목록을 불러온다
