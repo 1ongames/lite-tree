@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3'
 import { readBody, setResponseStatus, setCookie } from 'h3'
-import { verifyPassword, newToken } from '../../utils/auth'
+import { verifyPassword } from '../../utils/auth'
+import { signToken } from '../../utils/jwt'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
@@ -27,17 +28,12 @@ export default defineEventHandler(async (event) => {
     setResponseStatus(event, 401)
     return { message: 'invalid credentials' }
   }
-  db.prepare(`CREATE TABLE IF NOT EXISTS sessions (
-    token TEXT PRIMARY KEY,
-    user_name TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    expires DATETIME
-  )`).run()
-  const token = newToken(24)
-  const ttl = remember ? 1000*60*60*24*30 : 1000*60*60*24*7
-  const exp = new Date(Date.now() + ttl).toISOString()
-  db.prepare('INSERT INTO sessions (token, user_name, expires) VALUES (?, ?, ?)').run(token, user.name, exp)
+  // JWT 기반 무상태 세션 토큰 발급
+  const ttlSec = remember ? 60*60*24*30 : 60*60*24*7
+  const jwt = signToken({ sub: user.name }, ttlSec)
   db.close()
-  setCookie(event, 'session_token', token, { httpOnly: true, sameSite: 'lax', path: '/' })
+  const isProd = process.env.NODE_ENV === 'production'
+  const expires = new Date(Date.now() + ttlSec * 1000)
+  setCookie(event, 'session_token', jwt, { httpOnly: true, sameSite: 'lax', path: '/', secure: isProd, expires })
   return { ok: true }
 })

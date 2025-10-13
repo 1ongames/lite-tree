@@ -8,23 +8,16 @@ export default defineEventHandler((event) => {
 
 	if (!type || (type !== 'grant' && type !== 'all')) {
 		setResponseStatus(event, 400)
-		return { message: "invalid type. use 'grant' or 'all'" }
+		return { message: "invalid type." }
 	}
-		if (!actorName) {
+	
+	if (!actorName) {
 		setResponseStatus(event, 403)
-		return { message: 'forbidden: missing actor' }
+		return { message: 'forbidden' }
 	}
 
 	try {
 		const db = new Database('wikidata.db', { fileMustExist: false })
-		db.prepare(`CREATE TABLE IF NOT EXISTS users (
-			uuid TEXT,
-			name TEXT,
-			email TEXT,
-			isIP BOOLEAN,
-			isAutoVerifiedUser BOOLEAN,
-			perms TEXT NOT NULL CHECK (json_valid(perms) AND json_type(perms, '$') = 'array')
-		)`).run()
 		const row = db.prepare('SELECT perms FROM users WHERE name = ? LIMIT 1').get(actorName)
 		db.close()
 

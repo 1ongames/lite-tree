@@ -33,7 +33,6 @@ db.prepare(`CREATE TABLE IF NOT EXISTS users (
 	password TEXT NOT NULL
 )`).run();
 
-// 세션 및 가입 토큰 테이블
 db.prepare(`CREATE TABLE IF NOT EXISTS sessions (
 	token TEXT PRIMARY KEY,
 	user_name TEXT,

@@ -56,12 +56,10 @@ export function grantablePermsByActor(actorPerms) {
 
 export function sanitizePerms(input, actorPerms) {
     if (!Array.isArray(input)) return []
-    // actorPerms가 주어지면 actor 수준에 맞는 허용 목록을 사용, 없으면 하위호환으로 allowed_perms 사용
-    const allowed = Array.isArray(actorPerms) ? grantablePermsByActor(actorPerms) : allowed_perms
-    if (!allowed.length) return []
+
     const set = new Set()
     for (const p of input) {
-        if (typeof p === 'string' && allowed.includes(p)) set.add(p)
+        if (typeof p === 'string' && all_perms.includes(p)) set.add(p)
     }
     return Array.from(set)
 }

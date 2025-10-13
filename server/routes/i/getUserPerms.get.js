@@ -11,19 +11,10 @@ export default defineEventHandler((event) => {
 
   try {
     const db = new Database('wikidata.db', { fileMustExist: false })
-    // ensure table exists
-    db.prepare(`CREATE TABLE IF NOT EXISTS users (
-      uuid TEXT,
-      name TEXT,
-      email TEXT,
-      isIP BOOLEAN,
-      isAutoVerifiedUser BOOLEAN,
-      perms TEXT NOT NULL CHECK (json_valid(perms) AND json_type(perms, '$') = 'array')
-    )`).run()
 
     const row = db.prepare('SELECT name, perms FROM users WHERE name = ? LIMIT 1').get(username)
     db.close()
-
+    
     if (!row) {
       return { username: null, perms: [] }
     }

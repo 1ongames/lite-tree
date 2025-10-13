@@ -35,7 +35,7 @@
     isError.value = false
     try {
       pending.value = true
-      await $fetch('/member/login', { method: 'POST', body: { email: email.value, password: password.value, remember: remember.value } })
+      await $fetch('/i/login', { method: 'POST', body: { email: email.value, password: password.value, remember: remember.value } })
       router.push('/')
     } catch (e) {
       isError.value = true
