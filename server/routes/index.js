@@ -11,5 +11,5 @@ export default defineEventHandler((event) => {
     publicConfig = { FrontPage: 'FrontPage' }
   }
 
-  return sendRedirect(event, `/w/${publicConfig.FrontPage}`, 302)
+  return sendRedirect(event, `/w/${publicConfig.wiki_FrontPage}`, 302)
 })
