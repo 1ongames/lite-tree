@@ -5,6 +5,8 @@ import { signToken } from '../../utils/jwt'
 import { randomUUID } from 'node:crypto'
 import { autologin_date } from '../../../serverConfig.json'
 
+autologin_date != undefined ? autologin_date = 7 : autologin_date = autologin_date;
+
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const token = (body?.token || '').trim()
@@ -14,7 +16,7 @@ export default defineEventHandler(async (event) => {
   const pass2 = body?.password2 || ''
   if (!token || !email || !name || !pass || pass !== pass2) {
     setResponseStatus(event, 400)
-    return { message: '잘못된 가입 요청' }
+    return { message: '잘못된 가입 요청입니다.' }
   }
   // 비밀번호 기본 길이 제한
   if (pass.length < 8) {
