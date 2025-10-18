@@ -8,8 +8,8 @@ export default defineEventHandler((event) => {
   } else if (existsSync('publicConfig.example.json')) {
     publicConfig = JSON.parse(readFileSync('publicConfig.example.json', 'utf-8'))
   } else {
-    publicConfig = { FrontPage: 'FrontPage' }
+    publicConfig = { wiki_FrontPage: 'FrontPage' }
   }
 
-  return sendRedirect(event, `/w/${publicConfig.wiki_FrontPage}`, 302)
+  return sendRedirect(event, `/w/${encodeURIComponent(publicConfig.wiki_FrontPage)}`, 302)
 })
