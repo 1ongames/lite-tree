@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
   // 사용자 중복 확인
   try {
     db.prepare('INSERT INTO users (uuid, name, email, perms, password) VALUES (?, ?, ?, ?, ?)')
-      .run(randomUUID(), name, email, '[]', hashed)
+      .run(randomUUID(), name, email, '["member"]', hashed)
   } catch (e) {
     db.close()
     setResponseStatus(event, 400)
