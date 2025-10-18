@@ -5,8 +5,6 @@ import { signToken } from '../../utils/jwt'
 import { randomUUID } from 'node:crypto'
 import { autologin_date } from '../../../serverConfig.json'
 
-autologin_date != undefined ? autologin_date = 7 : autologin_date = autologin_date;
-
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const token = (body?.token || '').trim()
@@ -52,7 +50,7 @@ export default defineEventHandler(async (event) => {
   db.prepare('DELETE FROM signup_tokens WHERE token = ?').run(token)
 
   // 자동 로그인 (JWT)
-  const ttlSec = 60*60*24*autologin_date // 기본값 7일, 수정시 autologin_date일
+  const ttlSec = 60*60*24*autologin_date || 60*60*24*7 // 기본값 7일, 수정시 autologin_date일
   const jwt = signToken({ sub: name }, ttlSec)
   db.close()
   const isProd = process.env.NODE_ENV === 'production'
