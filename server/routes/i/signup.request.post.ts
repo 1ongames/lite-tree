@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3'
-import { readBody, setResponseStatus } from 'h3'
+import { defineEventHandler, readBody, setResponseStatus } from 'h3'
 import { newToken } from '../../utils/auth'
 
 export default defineEventHandler(async (event) => {

@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3'
-import { getQuery, setResponseStatus } from 'h3'
+import { defineEventHandler, getQuery, setResponseStatus } from 'h3'
 import { sanitizePerms } from '../../utils/permissions'
 
 export default defineEventHandler((event) => {

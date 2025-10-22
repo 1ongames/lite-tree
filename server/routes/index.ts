@@ -1,8 +1,13 @@
+import { defineEventHandler, H3Event, sendRedirect } from 'h3'
 import { readFileSync, existsSync } from 'fs'
 
-export default defineEventHandler((event) => {
+interface PublicConfig {
+  wiki_FrontPage: string
+}
 
-  let publicConfig
+export default defineEventHandler((event: H3Event) => {
+  let publicConfig: PublicConfig
+  
   if (existsSync('publicConfig.json')) {
     publicConfig = JSON.parse(readFileSync('publicConfig.json', 'utf-8'))
   } else if (existsSync('publicConfig.example.json')) {

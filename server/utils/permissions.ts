@@ -1,6 +1,8 @@
 import serverConfig from '../../serverConfig.json' assert { type: 'json' }
 
-export const allowed_perms = Array.isArray(serverConfig?.grant_permissions)
+export type Permission = string
+
+export const allowed_perms: Permission[] = Array.isArray(serverConfig?.grant_permissions)
     ? serverConfig.grant_permissions
     : [    
     "nsacl",
@@ -18,7 +20,8 @@ export const allowed_perms = Array.isArray(serverConfig?.grant_permissions)
     "batch_revert",
     "disable_two_factor_login"
 ]
-export const all_perms = [
+
+export const all_perms: Permission[] = [
     'member',
     'auto_verified_member',
     'developer',
@@ -47,17 +50,17 @@ export const all_perms = [
     'manage_account'
 ]
 
-export function grantablePermsByActor(actorPerms) {
+export function grantablePermsByActor(actorPerms: Permission[]): Permission[] {
     const permsArr = Array.isArray(actorPerms) ? actorPerms : []
     if (permsArr.includes('developer')) return all_perms
     if (permsArr.includes('grant')) return allowed_perms
     return []
 }
 
-export function sanitizePerms(input, actorPerms) {
+export function sanitizePerms(input: any, actorPerms?: Permission[]): Permission[] {
     if (!Array.isArray(input)) return []
 
-    const set = new Set()
+    const set = new Set<string>()
     for (const p of input) {
         if (typeof p === 'string' && all_perms.includes(p)) set.add(p)
     }

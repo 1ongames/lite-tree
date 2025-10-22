@@ -1,9 +1,12 @@
-import { setResponseStatus } from 'h3'
+import { H3Event, setResponseStatus } from 'h3'
+
+export type ErrorCode = '400' | '403' | '404' | '404_thr' | '404_doc' | '409' | '429' | '500'
 
 // 에러 메시지
-export const ERROR_MESSAGES = {
+export const ERROR_MESSAGES: Record<ErrorCode, string> = {
 	'400': '잘못된 요청입니다.',
 	'403': '권한이 부족합니다.',
+	'404': '요청한 리소스를 찾을 수 없습니다.',
 	'404_thr': '토론이 존재하지 않습니다.',
 	'404_doc': '문서를 찾을 수 없습니다.',
 	'409': '충돌이 발생했습니다.',
@@ -12,10 +15,11 @@ export const ERROR_MESSAGES = {
 }
 
 // http 코드
-export const STATUS_BY_CODE = {
+export const STATUS_BY_CODE: Record<ErrorCode, number> = {
 	'400': 400,
 	'403': 403,
 	'404': 404,
+	'404_thr': 404,
 	'404_doc': 404,
 	'409': 409,
 	'429': 429,
@@ -23,12 +27,12 @@ export const STATUS_BY_CODE = {
 }
 
 // 메시지
-export function getErrorMessage(code, fallback = '오류가 발생했습니다.') {
-	return (code && ERROR_MESSAGES[code]) || fallback
+export function getErrorMessage(code: ErrorCode | string, fallback: string = '오류가 발생했습니다.'): string {
+	return (code && ERROR_MESSAGES[code as ErrorCode]) || fallback
 }
 
 // api 반환
-export function respondErrorByCode(event, code) {
+export function respondErrorByCode(event: H3Event, code: ErrorCode): { code: ErrorCode; message: string } {
 	const status = STATUS_BY_CODE[code] ?? 400
 	const message = getErrorMessage(code)
 	try { setResponseStatus(event, status) } catch {}
@@ -36,7 +40,7 @@ export function respondErrorByCode(event, code) {
 }
 
 // 오류 반환
-export function setError(code) {
+export function setError(code: ErrorCode): { code: ErrorCode; title: string; message: string } {
 	const message = getErrorMessage(code)
 	return { code, title: '오류', message }
 }

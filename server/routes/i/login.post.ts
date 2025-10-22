@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3'
-import { readBody, setResponseStatus, setCookie } from 'h3'
+import { readBody, setResponseStatus, setCookie, defineEventHandler } from 'h3'
 import { verifyPassword } from '../../utils/auth'
 import { signToken } from '../../utils/jwt'
 
