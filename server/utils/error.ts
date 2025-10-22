@@ -32,11 +32,11 @@ export function getErrorMessage(code: ErrorCode | string, fallback: string = '�
 }
 
 // api 반환
-export function respondErrorByCode(event: H3Event, code: ErrorCode): { code: ErrorCode; message: string } {
-	const status = STATUS_BY_CODE[code] ?? 400
-	const message = getErrorMessage(code)
-	try { setResponseStatus(event, status) } catch {}
-	return { code, message }
+export function setAPIError(event: H3Event, code: ErrorCode): { status: string } {
+	const returnCode = STATUS_BY_CODE[code] ?? 400
+	const status = ERROR_MESSAGES[code] ?? "오류가 발생했습니다."
+	try { setResponseStatus(event, returnCode) } catch {}
+	return { status }
 }
 
 // 오류 반환
