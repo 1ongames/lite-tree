@@ -1,25 +1,29 @@
 import { createHmac, timingSafeEqual } from 'node:crypto'
 
-const textEncoder = new TextEncoder()
+interface JWTPayload {
+  [key: string]: any
+  iat?: number
+  exp?: number
+}
 
-function base64url(buf) {
+function base64url(buf: Buffer | string): string {
   const b64 = Buffer.isBuffer(buf) ? buf.toString('base64') : Buffer.from(buf).toString('base64')
   return b64.replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_')
 }
 
-function base64urlDecode(str) {
+function base64urlDecode(str: string): Buffer {
   const pad = 4 - (str.length % 4 || 4)
   const b64 = str.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat(pad)
   return Buffer.from(b64, 'base64')
 }
 
-function getSecret() {
+function getSecret(): Buffer {
   const secret = process.env.SESSION_SECRET || process.env.NUXT_SESSION_SECRET || 'dev-insecure-secret-change-me'
   // Use UTF-8 bytes for HMAC key
   return Buffer.from(secret, 'utf8')
 }
 
-export function signToken(payload = {}, ttlSeconds = 60 * 60 * 24 * 7) {
+export function signToken(payload: JWTPayload = {}, ttlSeconds: number = 60 * 60 * 24 * 7): string {
   const header = { alg: 'HS256', typ: 'JWT' }
   const iat = Math.floor(Date.now() / 1000)
   const exp = iat + Math.max(1, Math.floor(ttlSeconds))
@@ -33,7 +37,7 @@ export function signToken(payload = {}, ttlSeconds = 60 * 60 * 24 * 7) {
   return `${data}.${sig}`
 }
 
-export function verifyToken(token) {
+export function verifyToken(token: string): JWTPayload | null {
   if (!token || typeof token !== 'string' || token.split('.').length !== 3) return null
   const [h, p, s] = token.split('.')
   // verify signature
@@ -49,7 +53,7 @@ export function verifyToken(token) {
     return null
   }
   // parse payload
-  let payload
+  let payload: JWTPayload
   try {
     payload = JSON.parse(base64urlDecode(p).toString('utf8'))
   } catch {

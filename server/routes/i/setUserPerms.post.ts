@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3'
-import { readBody, setResponseStatus } from 'h3'
+import { defineEventHandler, readBody, setResponseStatus } from 'h3'
 import { sanitizePerms, grantablePermsByActor } from '../../utils/permissions'
 
 export default defineEventHandler(async (event) => {
@@ -13,20 +13,12 @@ export default defineEventHandler(async (event) => {
   }
   if (!actor || typeof actor !== 'string') {
     setResponseStatus(event, 403)
-    return { message: 'forbidden: missing actor' }
+    return { message: 'forbidden' }
   }
 
   try {
     const db = new Database('wikidata.db', { fileMustExist: false })
-    // ensure table/index
-    db.prepare(`CREATE TABLE IF NOT EXISTS users (
-      uuid TEXT,
-      name TEXT,
-      email TEXT,
-      isIP BOOLEAN,
-      isAutoVerifiedUser BOOLEAN,
-      perms TEXT NOT NULL CHECK (json_valid(perms) AND json_type(perms, '$') = 'array')
-    )`).run()
+    
     try { db.prepare(`CREATE UNIQUE INDEX IF NOT EXISTS idx_users_name ON users(name)`).run() } catch {}
 
     // load actor perms

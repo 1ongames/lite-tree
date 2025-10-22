@@ -1,4 +1,4 @@
-import { setCookie } from 'h3'
+import { defineEventHandler, setCookie } from 'h3'
 
 export default defineEventHandler((event) => {
   const isProd = process.env.NODE_ENV === 'production'
