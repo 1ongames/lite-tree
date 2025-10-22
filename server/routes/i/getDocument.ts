@@ -1,8 +1,10 @@
-import { defineEventHandler, H3Event } from 'h3'
+import { defineEventHandler, H3Event, getQuery } from 'h3'
 
 export default defineEventHandler((event: H3Event) => {
+  const { docName } = getQuery(event)
+  
   return {
-    docName: 'world',
+    docName: docName,
     doc: 'true'
   }
 })
