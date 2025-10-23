@@ -5,6 +5,7 @@ export default defineEventHandler((event: H3Event) => {
   
   return {
     docName: docName,
-    doc: 'true'
+    doc: '두산 그대의 이름은 승리',
+    existed: true
   }
 })
