@@ -10,23 +10,14 @@ export default defineEventHandler(async (event) => {
   const remember = !!body?.remember
   if (!email || !password) {
     setResponseStatus(event, 400)
-    return { message: 'email and password required' }
+    return { message: null }
   }
   const db = new Database('wikidata.db', { fileMustExist: false })
-  db.prepare(`CREATE TABLE IF NOT EXISTS users (
-    uuid TEXT,
-    name TEXT UNIQUE,
-    email TEXT UNIQUE,
-    isIP BOOLEAN,
-    isAutoVerifiedUser BOOLEAN,
-    perms TEXT NOT NULL,
-    password TEXT
-  )`).run()
   const user = db.prepare('SELECT name, email, password FROM users WHERE email = ? LIMIT 1').get(email)
   if (!user || !verifyPassword(password, user.password)) {
     db.close()
     setResponseStatus(event, 401)
-    return { message: 'invalid credentials' }
+    return { message: '아이디 또는 비밀번호가 틀렸습니다.' }
   }
   // JWT 기반 무상태 세션 토큰 발급
   const ttlSec = remember ? 60*60*24*30 : 60*60*24*7
