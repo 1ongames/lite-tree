@@ -21,6 +21,8 @@
   </style>
 
   <script setup>
+  const { login: authLogin } = useAuth()
+  
   const email = ref('')
   const password = ref('')
   const remember = ref(false)
@@ -35,11 +37,19 @@
     isError.value = false
     try {
       pending.value = true
-      await $fetch('/i/login', { method: 'POST', body: { email: email.value, password: password.value, remember: remember.value } })
-      router.push('/')
+      const result = await authLogin(email.value, password.value, remember.value)
+      
+      if (result.success) {
+        router.push('/')
+      } else {
+        isError.value = true
+        msg.value = result.error || '로그인 실패'
+      }
     } catch (e) {
       isError.value = true
-      msg.value = (e && e.data && e.data.message) || '로그인 실패'
-    } finally { pending.value = false }
+      msg.value = '로그인 실패'
+    } finally { 
+      pending.value = false 
+    }
   }
   </script>
